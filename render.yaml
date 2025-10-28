@@ -1,21 +1,23 @@
 services:
   - type: web
     name: money-manager-api
-    # This is the most important part - it forces the Java runtime
+    # This is the most important part - it forces the java runtime
     runtime: java
     plan: free
     # I see 'oregon-postgres' in your DB URL, so I'm setting the region to match.
-    region: oregon
-
+    region: oregon 
+    
     # Build and start commands
     buildCommand: "./mvnw package -DskipTests" # -DskipTests speeds up deployment
     startCommand: "java -jar target/money-manager-api-0.0.1-SNAPSHOT.jar"
-
+    
     # Link the secret environment variables
+    # --- THIS LINE IS NOW CORRECTLY INDENTED ---
     envVarGroups:
       - name: money-manager-secrets # This name must match the group you create on Render
-
+    
     # Environment variables specific to this service
+    # --- THIS LINE IS NOW CORRECTLY INDENTED ---
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
