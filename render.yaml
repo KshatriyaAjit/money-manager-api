@@ -1,7 +1,6 @@
 services:
   - type: web
     name: money-manager-api
-    runtime: java
     plan: free
     region: oregon 
 
@@ -15,7 +14,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
 
-      # Application activation link (adjust if frontend URL changes)
+      # Activation URL
       - key: APP_ACTIVATION_URL
         value: https://money-manager-api-gfmy.onrender.com/api/v1/profile/activate
 
