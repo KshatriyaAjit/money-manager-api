@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: money-manager-api
+    # This is the most important part - it forces the Java runtime
+    runtime: java
+    plan: free
+    # I see 'oregon-postgres' in your DB URL, so I'm setting the region to match.
+    region: oregon
+
+    # Build and start commands
+    buildCommand: "./mvnw package -DskipTests" # -DskipTests speeds up deployment
+    startCommand: "java -jar target/money-manager-api-0.0.1-SNAPSHOT.jar"
+
+    # Link the secret environment variables
+    envVarGroups:
+      - name: money-manager-secrets # This name must match the group you create on Render
+
+    # Environment variables specific to this service
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      # From your previous screenshot, this is your service's URL.
+      # This is for the activation email link.
+      - key: APP_ACTIVATION_URL
+        value: https://money-manager-api-gfmy.onrender.com/api/v1/profile/activate
