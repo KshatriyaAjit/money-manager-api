@@ -1,25 +1,32 @@
 services:
   - type: web
     name: money-manager-api
-    # This is the most important part - it forces the Java runtime
-    runtime: java
+    env: docker
     plan: free
-    # I see 'oregon-postgres' in your DB URL, so I'm setting the region to match.
     region: oregon
 
-    # Build and start commands
-    buildCommand: "./mvnw package -DskipTests" # -DskipTests speeds up deployment
-    startCommand: "java -jar target/money-manager-api-0.0.1-SNAPSHOT.jar"
+    dockerfilePath: Dockerfile
 
-    # Link the secret environment variables
-    envVarGroups:
-      - name: money-manager-secrets # This name must match the group you create on Render
-
-    # Environment variables specific to this service
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      # From your previous screenshot, this is your service's URL.
-      # This is for the activation email link.
+
       - key: APP_ACTIVATION_URL
         value: https://money-manager-api-gfmy.onrender.com/api/v1/profile/activate
+
+      - key: DB_URL
+        value: jdbc:postgresql://dpg-d3n3jg2li9vc7380fjq0-a.oregon-postgres.render.com/money_manager_db_ebv7
+      - key: DB_USER
+        value: money_manager_db_ebv7_user
+      - key: DB_PASSWORD
+        value: MIRH7yqriZ4IcCVu0AeIsADBk8xyTIVx
+
+      - key: BREVO_USERNAME
+        value: 985b90001@smtp-brevo.com
+      - key: BREVO_PASSWORD
+        value: wDdx28GUrRvQaEMf
+      - key: BREVO_FROM_EMAIL
+        value: kshatriyakavisingh@gmail.com
+
+      - key: JWT_SECRET
+        value: N4aF+4aGf+5aH+6aI+7aJ+8aK+9aL/0aM/1aN/2aP/3aQ/4aR/5aS/6aT/7aU/8aV/9aW==
