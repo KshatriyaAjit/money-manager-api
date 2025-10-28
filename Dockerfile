@@ -1,17 +1,18 @@
-# Use a lightweight JDK base image
-FROM eclipse-temurin:17-jdk-alpine
+# Use Java 21 for building
+FROM eclipse-temurin:21-jdk AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy everything
 COPY . .
 
-# Build the application (skip tests to speed up)
 RUN ./mvnw clean package -DskipTests
 
-# Expose the app port (Render uses 10000 internally)
-EXPOSE 8080
+# Use Java 21 for running
+FROM eclipse-temurin:21-jdk
 
-# Run the JAR
-CMD ["java", "-jar", "target/money-manager-api-0.0.1-SNAPSHOT.jar"]
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
